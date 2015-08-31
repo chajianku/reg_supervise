@@ -1,13 +1,13 @@
 <?php if (!defined('SYSTEM_ROOT')) { die('Insufficient Permissions'); } 
 /*
 Plugin Name: 开放注册管理
-Version: 4.8
+Version: 4.9
 Plugin URL: 
 Description: 用于解决开放注册所可能导致的一些问题
 Author: 云幻
 Author Email: 
 Author URL: http://www.yunhuan.tk/
-For: V3.9+
+For: V4.0+
 */
 function reg_supervise_reg(){
 global $m;
@@ -94,7 +94,9 @@ $result = $geetest->validate($_POST['geetest_challenge'], $_POST['geetest_valida
 	}} 
 elseif (strtolower($_POST['bf'])!==$_SESSION["reg_supervise_gg"]){
 msg('注册失败：验证错误');
-}}
+}
+$_POST['rpw']=$_POST['pw'];
+}
 function reg_supervise_login() {
 	?>
 	<style type="text/css">.box{width:300px;margin:10px auto;}.input-group .form-control {position: static;}</style>  
@@ -183,9 +185,7 @@ if($x != true){
 	$m->query("UPDATE `".DB_NAME."`.`".DB_PREFIX."users` SET `role` = 'user' WHERE email = '{$mail}'");
 	$js = option::get('reg_jg');
 	option::set('reg_jg',$js+1);
-	setcookie("wmzz_tc_user",$name);
-	setcookie("wmzz_tc_pw",EncodePwd($pw));
-	ReDirect(SYSTEM_URL.'index.php?pub_plugin=reg_supervise&error_msg=验证邮件发送失败！已为你激活用户！请绑定百度账号。');
+	ReDirect(SYSTEM_URL.'index.php?pub_plugin=reg_supervise&error_msg=验证邮件发送失败！已为你激活用户！请登录。');
 	die;
 	}
 else{
